@@ -1,0 +1,547 @@
+/* Isto cria uma barra lateral estreita fixada à esquerda da página */
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
+/* Estilos para dispositivos de tela pequena */
+@media only screen and (max-width: 600px) {
+    /* Adapte o layout para telas pequenas aqui */
+  }
+  
+  /* Estilos para dispositivos de tela média */
+  @media only screen and (min-width: 601px) and (max-width: 1024px) {
+    /* Adapte o layout para telas médias aqui */
+  }
+  
+  /* Estilos para dispositivos de tela grande */
+  @media only screen and (min-width: 1025px) {
+    /* Adapte o layout para telas grandes aqui */
+  }
+/* Isto cria uma barra lateral estreita fixada à esquerda da página */
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
+/* Estilos para dispositivos de tela pequena */
+@media only screen and (max-width: 600px) {
+    /* Adapte o layout para telas pequenas aqui */
+  }
+  
+  /* Estilos para dispositivos de tela média */
+  @media only screen and (min-width: 601px) and (max-width: 1024px) {
+    /* Adapte o layout para telas médias aqui */
+  }
+  
+  /* Estilos para dispositivos de tela grande */
+  @media only screen and (min-width: 1025px) {
+    /* Adapte o layout para telas grandes aqui */
+  }
+  :root {
+    --color-primary: #269fe6;
+    --color-primary-hover: #2086c2;
+    --color-primary-dark: #13141f;
+    --color-primary-dark-hover: #212336;
+    --color-primary-light: #d4ecfa;
+    --color-primary-light-hover: #bdd8e7;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-dark-text: #444;
+    --color-info-light: #cce5ff;
+    --color-debug-light: #cce5ff;
+    --color-success-light: #d4edda;
+    --color-alert-light: #fff3cd;
+    --color-warning-light: #fff3cd;
+    --color-error-light: #f8d7da;
+    --color-info-dark: #4d86c4;
+    --color-debug-dark: #4d86c4;
+    --color-success-dark: #4a9c5d;
+    --color-alert-dark: #927f40;
+    --color-warning-dark: #927f40;
+    --color-error-dark: #da525d;
+    --color-gray-0: #f9f9f9;
+    --color-gray-1: #e0e0e0;
+    --color-gray-2: #c7c7c7;
+    --color-gray-3: #aeaeae;
+    --color-gray-4: #959595;
+    --color-gray-5: #7d7d7d;
+    --color-gray-6: #646464;
+    --color-gray-7: #4b4b4b;
+    --color-gray-8: #323232;
+    --color-gray-9: #191919;
+    --font-primary: sans-serif;
+    --font-headings: 'Roboto Slab', serif;
+    --spacing-gutter-medium: 3rem;
+    --spacing-gutter-large: 4rem;
+  }
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  html {
+    font-size: 100%;
+  }
+  body {
+    font-family: var(--font-primary);
+    background: var(--color-white);
+    color: var(--color-dark-text);
+  }
+.body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }  
+  
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 6rem;
+    padding: 2rem 1rem;
+    background-color: #008B8B;
+    z-index: 1050;
+    transition: width 0.3s ease-in-out;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 1.2);
+
+}
+.welcome-text {
+    color: white;
+}
+.nav-link-beat:hover {
+    animation: beat 0.5s infinite;
+}
+
+@keyframes beat {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+/* Quando o usuário passa o mouse sobre a barra lateral, ela se expande */
+.sidebar:hover {
+    width: 16rem;
+}
+.sidebar-item:hover .nav-link-text {
+    color: green;
+}
+
+/* Certifique-se de que o conteúdo do navlink não se enrole quando a barra de navegação se contrai */
+.sidebar .nav-link {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Corrija a largura dos ícones */
+.sidebar .nav-link i {
+    width: 2rem;
+}
+
+/* Oculte os rótulos do navlink por padrão */
+.sidebar .nav-link span {
+    visibility: hidden;
+    opacity: 1;
+    transition: opacity 0.1s ease-in-out;
+}
+
+/* Quando a barra lateral é passada com o mouse, revele os rótulos */
+.sidebar:hover .nav-link span {
+    visibility: visible;
+    opacity: 1;
+    color: white;
+    marginRight: 10px;
+}
+
+/* Container para o cabeçalho da barra lateral. Certifique-se de que o conteúdo não se enrole quando
+ * a barra lateral é recolhida.
+ */
+.sidebar-header {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Posicione o cabeçalho relativo ao logo e oculte por padrão */
+.sidebar-header h2 {
+    opacity: 0;
+    margin-left: 1rem;
+    margin-bottom: 0;
+    transition: opacity 0.1s ease-in-out;
+}
+
+/* Revele o cabeçalho quando a barra lateral é alternada */
+.sidebar:hover .sidebar-header h2 {
+    opacity: 1;
+}
+
+/* Posicione o conteúdo relativo à barra lateral recolhida */
+.content {
+    margin-left: 7rem;
+    margin-right: 2rem;
+    padding: 2rem 1rem;
+    display: grid;
+    flex-direction: column; /* Define a direção dos itens */
+    align-items: center; 
+    max-width: 100%; /* Garante que o item não ultrapasse a largura máxima */
+
+}
+html {
+    zoom: 0.75; /* Ajusta a escala da página para 75% */
+  }
+
+
+
+
+.welcome-text{
+    font-family: Arial, Helvetica, sans-serif;    
+    font-size: 17px;
+
+}
+.sidebar-info{
+    vertical-align: middle;
+    font-family:Arial, Helvetica, sans-serif;
+    margin: left 30px; 
+    font-size: 17px;
+}
+.text-titulo{
+    font-family:'Poppins', sans-serif;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.text-semacesso{
+    font-family:'Poppins', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Estilos para a tabela */
+    .table-font {
+        font-family: Calibri, sans-serif; /* Aqui você pode definir a fonte desejada */
+    }
+    
+.text-button {
+    position: relative;
+    border-width: 3px;
+    font-size: 14px;
+    background-color: mediumturquoise;
+    color: black;
+    margin-left: 43%;
+    margin-top: -30px;
+    padding-top: 11px;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 1.2);
+    transition: 300ms;
+    overflow: hidden; /* Adicionado para esconder parte do círculo que sai do botão */
+}
+
+.text-button:hover {
+    transform: scale(0.80);
+}
+    
+
+.text-user {
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    position: absolute;
+    top: 150px;
+    right: 110px;
+    color: #222222;
+    float: right;
+    font-size: 16px;
+    font-weight: 600;
+    transition: transform 0.3s ease; /* Define transition properties */
+}
+
+
+
+.text-user:hover {
+    color:black; /* Change color on hover */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transform: rotate(50deg); /* Rotate the text 360 degrees on hover */
+    cursor: pointer; 
+}
+.mr-1{
+    transition: 300ms;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+.mr-1:hover {
+    transform: scale(0.90);
+
+}
+.text-ia{
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    position: absolute;
+    color: #222222;
+    float: right;
+    font-size: 16px;
+    font-weight: 600;
+    transition: transform 0.3s ease; 
+
+}
+
+.mensagemerro {
+    text-align: start;
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    margin-top: 30px;
+    background-color: rgb(255, 217, 217); /* Cor de fundo para indicar erro */
+    color: red; /* Cor do texto de erro */
+}
+
+.mensagemok {
+    text-align: start;
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px;
+    margin-top: 30px;
+    font-size: 22px;
+    background-color: rgb(232, 243, 230); /* Cor de fundo para indicar sucesso */
+    color: black; /* Cor do texto de sucesso */
+}
+
+.logo-imgz {
+    width: 10%;
+    margin-left: 300px;
+    margin-top: 20px;
+    
+    
+}
+.animation-container {
+    display: flex;
+    justify-content: center; /* Centraliza os itens horizontalmente */
+    align-items: center; /* Centraliza os itens verticalmente */
+}
+
+.animation1 {
+    width: 350px;
+    height: 350px;
+    margin-right: -150px; /* Ajusta a margem entre as animações */
+    margin-top: 250px;
+}
+.animation3 {
+    width: 500px;
+    height: 500px;
+    margin-right: 0px; /* Ajusta a margem entre as animações */
+    margin-top: 80px;
+}
+
+.animation2{
+    width: 400px;
+    height: 400px;
+    margin-left: -110px; /* Ajusta a margem entre as animações */
+    transform: scaleX(-1);
+    margin-top: 88px;
+}
+.pagina-initial {
+    background: var(--color-white);
+    height: 100vh; /* Ajustei para 100vh para garantir que a página não tenha uma altura maior que a janela de visualização */
+    width: 100%;
+    overflow-y: hidden; /* Desativa a barra de rolagem vertical */
+}
+
+
+.output-message{
+    font-size: 18px;
+    color: #000;  /* Cor do texto */
+    background-color: #f4f6f8;  /* Cor de fundo */
+    border: 1px solid #ebedf0;  /* Borda */
+    font-family: 'Poppins', sans-serif;
+    border-radius: 10px;  /* Cantos arredondados */
+    padding: 10px 20px;  /* Espaçamento interno */
+    margin-top: 20px;  /* Espaçamento superior */
+    text-align: center;  /* Alinhamento do texto */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Sombra */
+    font-weight: bold;  /* Negrito */
+    transition: opacity 0.5s ease-in-out;  /* Transição suave */
+}
+.output-message.hide{
+    opacity: 0;
+}
+.class_css2{
+    text-align: start;
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    margin-top: 30px;
+    background-color: rgb(232, 243, 230); /* Cor de fundo para indicar sucesso */
+}
+
+.class_css1{
+    text-align: start;
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    margin-top: 30px;
+    background-color: rgb(255, 217, 217); /* Cor de fundo para indicar erro */
+}
+.filtros {
+background-color: rgb(232, 243, 230); /* Cor de fundo para indicar sucesso */
+padding: 10px;
+border-radius: 5px;
+font-family: 'Poppins', sans-serif;
+
+}
+.text-footer {
+    display: flex;
+    justify-content: space-between;
+    background-color:rgb(0, 139, 139);
+    color: white;
+    text-align: center;
+    padding: 15px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.footer-left {
+    margin-left: 100px;
+}
+
+.footer-right {
+    margin-right: 100px;
+}
+
+/* Animation container styling */
+
+/* Header styling */
+.main-header {
+    background-color:rgb(0, 139, 139);
+    color: white;
+    text-align: center;
+    padding-top: 3%;
+    margin-top: -4%;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.logo-img {
+    width: 15%;
+}
+
+
+
+.class_css4{
+    text-align: start;
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    margin-left: -200px;
+    margin-top: 30px;
+}
+
+.logo-imgx {
+    width: 60%;
+    margin-left: -210px;
+    margin-top: 20px;
+}
+
+.card-icon {
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    margin: auto;
+    transition: 300ms;
+    overflow: hidden; /* Adicionado para esconder parte do círculo que sai do botão */
+}
+
+
+.card-style {
+    flex: 1 1 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    height: 150px;
+    font-family: 'Poppins', sans-serif;
+    transition: transform 300ms;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Sombra inicial */
+
+}
+
+.card-style:hover {
+    transform: scale(1.50); 
+    box-shadow: 0 8px 16px rgba(0, 0, 2, 0.3);  /* Sombra aumentada ao passar o mouse */
+    background-color: rgb(232, 243, 230); /* Cor de fundo para indicar sucesso */
+}
+.text-titulototal{
+    margin-right: 25px;
+    display: flex;
+    position: absolute;
+    right: 0;
+    padding: 20px;    
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    color: #000;
+
+}
+
+
+.text-devolucao2 {
+    /* margin-bottom: 20px; */
+    /* margin-top: 50px; */
+    font-size: 15px;
+    font-family:'Poppins', sans-serif; 
+    color: #0e0e0d;
+    text-align: left;
+    /* margin-bottom: 20px; */
+    background-color: #FFFFE0;
+
+
+}
+.text-semacesso2{
+    font-family:'Poppins', sans-serif;
+    font-size: 25px;
+    text-align: center;
+    
+}
+.text-devolucao3 {
+    /* margin-bottom: 20px; */
+    /* margin-top: 50px; */
+    font-size: 15px;
+    font-family:'Poppins', sans-serif; 
+    color: #0e0e0d;
+    text-align: left;
+    /* margin-bottom: 20px; */
+    background-color: #E0FFFF;
+
+}
+
+.text-devolucao4 {
+    /* margin-bottom: 20px; */
+    margin-top: 30px;
+    font-size: 18px;
+    font-family:'Poppins', sans-serif; 
+    color:#646464;
+    text-align: center;
+    display: center;
+    align-items: center;    
+    /* margin-bottom: 20px; */
+}
+.text-mensage {
+    margin-top: -250px;
+    color: rgb(204, 8, 8);
+    padding: 15px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    position: absolute; /* Usar 'absolute' para facilitar a centralização */
+    top: 50%;  /* Centraliza verticalmente */
+    left: 40%; /* Centraliza horizontalmente */
+    
+}
+
+/* Define a animação de pulsação */
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1); /* Aumenta o tamanho */
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}

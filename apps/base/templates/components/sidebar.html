@@ -1,0 +1,25 @@
+{% load static %} <!-- Carrega as tags estáticas -->
+
+
+<div class="sidebar">
+    <div class="sidebar-header">
+        <img src="{% static 'image/logobranco.png' %}" alt="Logo" class="img-fluid">
+    </div>
+    <hr>
+    <p class="welcome-text">Bem-Vindo, colega!</p>
+    <nav class="nav flex-column">
+        <a href="/home" class="nav-link nav-link-beat">
+            <i class="fas fa-home me-2 fa-lg" style="color: #FFFFFF;"></i>
+            <span class="sidebar-info">Home</span>
+        </a>
+        <a href="/unicred" class="nav-link nav-link-beat">
+            <i class="fa-solid fa-map-location-dot fa-lg" style="color: #FFFFFF;"></i>
+            <span class="sidebar-info">unicred</span>
+        </a>
+        <a href="/avarias" class="nav-link nav-link-beat">
+            <i class="fa-solid fa-map-location-dot fa-lg" style="color: #FFFFFF;"></i>
+            <span class="sidebar-info">Avarias</span>
+        </a>
+        <!-- Adicione mais links conforme necessário -->
+    </nav>
+</div>

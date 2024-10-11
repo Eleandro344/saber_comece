@@ -3,7 +3,6 @@ import sys
 from dotenv import load_dotenv
 from corsheaders.defaults import default_headers
 
-# base_dir config
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 STATIC_DIR=os.path.join(BASE_DIR,'static')
@@ -62,7 +61,13 @@ DJANGO_APPS = [
 THIRD_APPS = [
     "corsheaders",
 
+
 ]
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+PLOTLY_DASH = {
+    'cache_timeout_initial_arguments': 60,
+}
 
 
 PROJECT_APPS = [
@@ -83,6 +88,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
+    'django_plotly_dash.middleware.BaseMiddleware',
+    'django_plotly_dash.middleware.ExternalRedirectionMiddleware',	
 	
 ]
 
@@ -92,11 +99,10 @@ ROOT_URLCONF = "core.urls"
 
 AUTH_USER_MODEL = "contas.MyUser"
 
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        'DIRS': [os.path.join(BASE_DIR, 'apps/base/templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -162,7 +168,7 @@ SESSION_TIMEOUT_REDIRECT = 'http://localhost:8000/contas/timeout/'
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/contas/timeout/'
 
 LANGUAGE_CODE = 'pt-br'
 
@@ -181,6 +187,9 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR,'static')
 STATIC_URL = '/static/' 
 
+
+
+
 # STATICFILES_DIRS = [ # talvez em Produção podesse usar assim.
 #     BASE_DIR / 'static',
 # ]
@@ -193,7 +202,12 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
+ASGI_APPLICATION = "seu_projeto.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}
 
 # Se tiver configuração de email
 EMAIL_HOST = os.getenv('EMAIL_HOST')

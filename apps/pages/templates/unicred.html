@@ -1,0 +1,208 @@
+
+{% comment %} {% extends 'base.html' %} <!-- Extende a base do layout principal --> {% endcomment %}
+{% load static %} <!-- Carrega as tags estáticas -->
+<!-- apps/templates/unicred.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta Unicred</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link para o seu CSS -->
+</head>
+<body>
+    <style> /* Estilo geral para o corpo da página */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        
+        /* Estilo para o título */
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        
+        /* Estilo do formulário */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        /* Estilo das tabelas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        table thead {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        table th {
+            font-weight: bold;
+        }
+        
+        table td {
+            color: #333;
+            font-size: 14px;
+        }
+         </style>
+    <h1>Consulta Unicred</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="codigo_doc">Código do DOC:</label>
+        <input type="text" id="codigo_doc" name="codigo_doc" required>
+        <button type="submit">Pesquisar</button>
+    </form>
+
+    <!-- Resultados da Tabela unicredremessa -->
+    {% if resultados_remessa %}
+    <h2>Resultados da Remessa</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Data da Gravação</th>
+                <th>Identificação da Ocorrência</th>
+                <th>Código do DOC</th>
+                <th>Data de Emissão</th>
+                <th>Data de Vencimento</th>
+                <th>Valor do Título</th>
+                <th>Nome/Razão Social do Pagador</th>
+                <th>Data Limite para Desconto</th>
+                <th>Valor do Desconto</th>
+                <th>Nº Sequencial do Registro</th>
+                <th>Nº Sequencial do Arquivo</th>
+                <th>Nº Sequencial do Registro</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in resultados_remessa %}
+            <tr>
+                <td>{{ item.data_gravacao }}</td>
+                <td>{{ item.identificacao_ocorrencia }}</td>
+                <td>{{ item.codigo_doc }}</td>
+                <td>{{ item.data_emissao }}</td>
+                <td>{{ item.data_vencimento }}</td>
+                <td>{{ item.valor_titulo }}</td>
+                <td>{{ item.nome_pagador }}</td>
+                <td>{{ item.data_limite_desconto }}</td>
+                <td>{{ item.valor_desconto }}</td>
+                <td>{{ item.sequencial_registro_remessa }}</td>
+                <td>{{ item.sequencial_arquivo }}</td>
+                <td>{{ item.sequencial_registro }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Nenhum resultado encontrado para a remessa.</p>
+    {% endif %}
+
+    <!-- Resultados da Tabela retornounicred -->
+    {% if resultados_retorno %}
+    <table>
+        <thead>
+            <tr>
+                <th>Data de Geração do Arquivo</th>
+                <th>Tipo de Instrução</th>
+                <th>Código de Movimento</th>
+                <th>Complemento do Movimento</th>
+                <th>Data de Liquidação</th>
+                <th>Canal de Liquidação</th>
+                <th>Valor do Título</th>
+                <th>Valor Abatimento</th>
+                <th>Valor Pago</th>
+                <th>Juros de Mora</th>
+                <th>Valor Líquido</th>
+                <th>Data de Vencimento</th>
+                <th>Data Programada para Repasse</th>
+                <th>Valor da Tarifa</th>
+                <th>Data de Débito da Tarifa</th>
+                <th>Valor Desconto Concedido</th>
+                <th>Sequencial do Registro</th>
+                <th>Nome do Beneficiário</th>
+                <th>Sequencial do Retorno</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in resultados_retorno %}
+            <tr>
+                <td>{{ item.data_geracao }}</td>
+                <td>{{ item.tipo_instrucao }}</td>
+                <td>{{ item.codigo_movimento }}</td>
+                <td>{{ item.complemento_movimento }}</td>
+                <td>{{ item.data_liquidacao }}</td>
+                <td>{{ item.canal_liquidacao }}</td>
+                <td>{{ item.valor_titulo }}</td>
+                <td>{{ item.valor_abatimento }}</td>
+                <td>{{ item.valor_pago }}</td>
+                <td>{{ item.juros_mora }}</td>
+                <td>{{ item.valor_liquido }}</td>
+                <td>{{ item.data_vencimento }}</td>
+                <td>{{ item.data_repasse }}</td>
+                <td>{{ item.valor_tarifa }}</td>
+                <td>{{ item.data_debito_tarifa }}</td>
+                <td>{{ item.valor_desconto_concedido }}</td>
+                <td>{{ item.sequencial_registro }}</td>
+                <td>{{ item.nome_beneficiario }}</td>
+                <td>{{ item.sequencial_retorno }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Nenhum resultado encontrado para o retorno.</p>
+    {% endif %}
+</body>
+</html>
