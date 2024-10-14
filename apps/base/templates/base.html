@@ -40,7 +40,7 @@
 		{% include 'components/sidebar.html' %} 
 	{% endif %} 
 
-    {% if request.path != '/contas/entrar/' and request.path != '/contas/timeout/' %}
+    {% if request.path == '/home' %}
     {% include 'components/footer.html' %} 
     {% endif %} 
 
