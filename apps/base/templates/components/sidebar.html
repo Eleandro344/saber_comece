@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
 
         <img src="{% static 'image/logobranco.png' %}" alt="Logo" class="img-fluid">
-    </div>
+</div>
     <hr>
     <p class="welcome-text">Bem-Vindo, colega!</p>
     <nav class="nav flex-column">
@@ -19,10 +19,21 @@
             <i class="bi bi-stack-overflow" style="color: #FFFFFF;font-size:25px;"></i>
             <span class="sidebar-info">Unicred</span>
         </a>
+        <a href="/docsitau" class="nav-link nav-link-beat {% if request.path == '/docsitau/' %}active{% endif %}">
+            <i class="bi bi-stack-overflow" style="color: #FFFFFF;font-size:25px;"></i>
+            <span class="sidebar-info">Banco Itau</span>
+        </a>
+        <a href="/grafeno" class="nav-link nav-link-beat {% if request.path == '/grafeno/' %}active{% endif %}">
+            <i class="bi bi-stack-overflow" style="color: #FFFFFF;font-size:25px;"></i>
+            <span class="sidebar-info">Banco Grafeno</span>
+        </a>     
+        <a href="/santander" class="nav-link nav-link-beat {% if request.path == '/santander/' %}active{% endif %}">
+            <i class="bi bi-stack-overflow" style="color: #FFFFFF;font-size:25px;"></i>
+            <span class="sidebar-info">Banco santander</span>
+        </a>                   
         <a href="/faturamento" class="nav-link nav-link-beat {% if request.path == '/faturamento/' %}active{% endif %}">
             <i class="bi bi-stack-overflow" style="color: #FFFFFF;font-size:25px;"></i>
             <span class="sidebar-info">Faturamento</span>
         </a>
-        <!-- Adicione mais links conforme necessário -->
     </nav>
 </div>

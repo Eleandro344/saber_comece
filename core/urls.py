@@ -7,7 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('contas/', include('contas.urls')), # url do ap
     path('', include('pages.urls')), # url do app
-    path('unicred/', include('apps.pages.urls')),  # Inclua o caminho correto do app
+
 
     
     

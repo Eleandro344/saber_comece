@@ -1,0 +1,336 @@
+{% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<head>
+    {% block title %}Faturamento{% endblock %}
+</head>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<body>
+    
+{% block content %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<div class="center-text">
+    <h2>Faturamento - Resumo</h2>
+    {% if exibicao == 'nao' %}
+        <p><strong>Faturamento não contabilizado ainda: aguarde.</strong></p>
+    {% else %}
+        <div class="container">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <div class="container">
+            <div class="row">
+                <!-- Primeiro card -->
+                <div class="col-md-4">
+                    <div class="card card-style" style="max-width: 300px; margin: 20px;">
+                        <div class="row no-gutters">
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Itau</h5> <!-- Nome do Banco -->
+                                    <p class="card-text" style="font-size: 10px;">
+                                        <h5>R$ {{itautotal}}</h5> <!-- Valor -->
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center d-flex align-items-center justify-content-center" style="background-color: #28a745;">
+                                <i class="fa fa-university card-icon" style="font-size: 2rem; color: white;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Segundo card -->
+                <div class="col-md-4">
+                    <div class="card card-style" style="max-width: 300px; margin: 20px;">
+                        <div class="row no-gutters">
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Santander </h5> <!-- Nome do Banco -->
+                                    <p class="card-text" style="font-size: 10px;">
+                                        <h5>R$ {{santandertotal}}</h5> <!-- Valor -->
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center d-flex align-items-center justify-content-center" style="background-color: #28a745;">
+                                <i class="fa fa-university card-icon" style="font-size: 2rem; color: white;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card card-style" style="max-width: 300px; margin: 20px;">
+                        <div class="row no-gutters">
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Grafeno</h5> <!-- Nome do Banco -->
+                                    <p class="card-text" style="font-size: 10px;">
+                                        <h5>R$ {{grafenototal}}</h5> <!-- Valor -->
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center d-flex align-items-center justify-content-center" style="background-color: #28a745;">
+                                <i class="fa fa-university card-icon" style="font-size: 2rem; color: white;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-md-4">
+                    <div class="card card-style" style="max-width: 300px; margin: 20px;">
+                        <div class="row no-gutters">
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Sicoob</h5> <!-- Nome do Banco -->
+                                    <p class="card-text" style="font-size: 10px;">
+                                        <h5>R$ {{sicoobtotal}}</h5> <!-- Valor -->
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center d-flex align-items-center justify-content-center" style="background-color: #28a745;">
+                                <i class="fa fa-university card-icon" style="font-size: 2rem; color: white;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-style" style="max-width: 300px; margin: 20px;">
+                        <div class="row no-gutters">
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Unicred</h5> <!-- Nome do Banco -->
+                                    <p class="card-text" style="font-size: 10px;">
+                                        <h5>R$ {{totalunicred}}</h5> <!-- Valor -->
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center d-flex align-items-center justify-content-center" style="background-color: #28a745;">
+                                <i class="fa fa-university card-icon" style="font-size: 2rem; color: white;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Terceiro card -->
+                <div class="col-md-4">
+                    <div class="card card-style" style="max-width: 300px; margin: 20px;">
+                        <div class="row no-gutters">
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Sofisa</h5> <!-- Nome do Banco -->
+                                    <p class="card-text" style="font-size: 10px;">
+                                        <h5>R$ {{total_sofisa}}</h5> <!-- Valor -->
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center d-flex align-items-center justify-content-center" style="background-color: #28a745;">
+                                <i class="fa fa-university card-icon" style="font-size: 2rem; color: white;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+            
+    
+        <style>
+            /* Estilos da tabela */
+            table {
+                width: 100%;
+                margin: 20px 0;
+                font-family: Arial, sans-serif;
+                font-size: 15px;
+            }
+        
+            th {
+                background-color: rgb(230, 230, 230);
+                font-weight: bold;
+                color: black;
+                text-align: left;
+                font-family: Arial, sans-serif;
+                white-space: nowrap;
+        
+                
+            }
+        
+            td {
+                text-align: left;
+                min-width: 100px;
+                font-family: Arial, sans-serif;
+                white-space: nowrap;
+        
+            }
+        
+        /* Linhas ímpares da tabela */
+        tr:nth-child(odd) {
+            background-color: rgb(248, 248, 248);
+        }
+        
+        /* Estilização condicional das colunas específicas */
+        td.ocorrencia {
+            background-color: #006400;
+            color: white !important; /* Garante que o texto seja sempre branco */
+        }
+        
+        td.tipo_instrucao_origem {
+            background-color: #A52A2A;
+            color: white !important; /* Garante que o texto seja sempre branco */
+        }
+        
+        td.codigo_movimento {
+            background-color: #006400;
+            color: white !important; /* Garante que o texto seja sempre branco */
+        }
+            .card-style {
+            flex: 1 1 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            height: 150px;
+            font-family: 'Poppins', sans-serif;
+            transition: transform 300ms;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Sombra inicial */
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+                font-weight: bold;
+            }
+            
+            .card-text {
+                font-size: 1rem;
+                color: #333;
+            }
+
+            .card-icon {
+            color: white;
+            text-align: center;
+            font-size: 30px;
+            margin: auto;
+            transition: 300ms;
+            overflow: hidden; /* Adicionado para esconder parte do círculo que sai do botão */
+            max-width: 90px;
+            height: 150px;
+            }
+            .card-style:hover {
+                transform: scale(1.50); 
+                box-shadow: 0 8px 16px rgba(0, 0, 2, 0.3);  /* Sombra aumentada ao passar o mouse */
+                background-color: rgb(232, 243, 230); /* Cor de fundo para indicar sucesso */
+            }                                    
+                            </style>                                    
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+   
+
+    <!-- Tabela de remessa -->
+<table class="table table-striped table-bordered" style="background-color: #f9f9f9; margin-left: 100px;">
+    <thead>
+        <tr>
+            {% if total_por_banco %}
+                {% for col, value in total_por_banco.0.items %}
+                    <th>{{ col }}</th>
+                {% endfor %}
+            {% endif %}
+        </tr>
+    </thead>
+    <body>
+        {% for row in total_por_banco %}
+            <tr>
+                {% for key, value in row.items %}
+                    <td class="{% if key == 'Ocorrencia' %}ocorrencia{% elif key == 'TIPO DE INSTRUÇÃO ORIGEM' %}tipo_instrucao_origem{% elif key == 'CÓDIGO DE MOVIMENTO' %}codigo_movimento{% endif %}">{{ value }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+</table>
+        
+    <!-- Canvas onde o gráfico será renderizado -->
+
+    <div class="center-text">
+        <h2>Faturamento por Banco</h2>
+    </div>
+    <!-- Use um contêiner flexível para centralizar o gráfico -->
+    <div style="display: flex; justify-content: center;"> <!-- Flex container -->
+        <canvas id="graficoPizza" width="300" height="300"></canvas> <!-- Tamanho do gráfico ajustado -->
+    </div>
+    
+    <script>
+        // Obtenha os dados enviados pelo contexto
+        var dadosGrafico = {{ grafico|safe }};
+    
+        // Extraia as informações que serão usadas no gráfico
+        var labels = dadosGrafico.map(function(item) {
+            return item['Nome do Banco'];
+        });
+    
+        var data = dadosGrafico.map(function(item) {
+            return item['Total'];
+        });
+    
+        // Configuração do gráfico de pizza
+        var ctx = document.getElementById('graficoPizza').getContext('2d');
+        var graficoPizza = new Chart(ctx, {
+            type: 'pie',  // Gráfico de pizza
+            data: {
+                labels: labels,  // Rótulos (nomes dos bancos)
+                datasets: [{
+                    label: 'Total por Banco',
+                    data: data,  // Dados (valores de faturamento por banco)
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                var label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.raw.toFixed(2);  // Exibe os valores com duas casas decimais
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    
+    
+    {% endif %}
+
+
+{% endblock %}
+</body>
+</html>

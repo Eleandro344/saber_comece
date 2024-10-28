@@ -18,8 +18,7 @@ def logout_view(request):
     return redirect('timeout')
 # urls.py
 
-# Login view
-# Login view
+
 def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -34,10 +33,12 @@ def login_view(request):
     # Se o usuário já estiver logado, redireciona para a home
     if request.user.is_authenticated:
         return redirect('home')
-    
     return render(request, 'login.html')
 
 # Home view protegida
 @login_required(login_url='login')  # Redireciona para login se o usuário não estiver autenticado
 def home_view(request):
     return render(request, 'home.html')
+
+
+

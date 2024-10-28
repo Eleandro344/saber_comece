@@ -263,3 +263,8 @@ html {
   color: #6c757d; /* Cor padrão do Bootstrap para placeholders */
   opacity: 1; /* Garantir que a opacidade esteja em 100% */
 }
+.center-text {
+  text-align: center;
+  font-family: 'Poppins', sans-serif; /* Fonte utilizada */
+
+}

@@ -545,3 +545,25 @@ font-family: 'Poppins', sans-serif;
         transform: translate(-50%, -50%) scale(1);
     }
 }
+
+
+.card-style {
+    flex: 1 1 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    height: 150px;
+    font-family: 'Poppins', sans-serif;
+    transition: transform 300ms;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Sombra inicial */
+}
+
+.card-style:hover {
+    transform: scale(1.50); 
+    box-shadow: 0 8px 16px rgba(0, 0, 2, 0.3);  /* Sombra aumentada ao passar o mouse */
+    background-color: rgb(232, 243, 230); /* Cor de fundo para indicar sucesso */
+}
+.card-style {
+    /* ... */
+    transition: transform 300ms, box-shadow 300ms, background-color 300ms; /* Transições adicionais */
+}
