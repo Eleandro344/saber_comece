@@ -838,8 +838,7 @@ def carregar_dados_remessa_santander(codigo_doc=None):
 
             remessasantander_bd = remessasantander_bd.sort_values(by='Data da Ocorrencia', ascending=True)       
         else:
-
-            remessasantander_bd = pd.read_sql(consulta_remessa, con=mydb)
+            remessasantander_bd = pd.read_sql(consulta_remessa, con=mydb).head(10)
             remessasantander_bd = remessasantander_bd.loc[remessasantander_bd['CODIGO DO DOC'].notnull() & (remessasantander_bd['CODIGO DO DOC'] != "")]
             novos_nomes = {
                 'Data da Gravação do Arquivo': 'Data da Ocorrencia',
@@ -851,7 +850,7 @@ def carregar_dados_remessa_santander(codigo_doc=None):
             remessasantander_bd = remessasantander_bd.sort_values(by='Data da Ocorrencia', ascending=True)       
             mydb.close()
 
-            return remessasantander_bd
+        return remessasantander_bd
     except mysql.connector.Error as e:
         print("Erro ao conectar-se ao banco de dados:", e)
         return pd.DataFrame()
@@ -895,13 +894,12 @@ def carregar_dados_retorno_santander(codigo_doc=None):
             `Código do banco`,
             `Número Sequência do arquivo trailer`,
             `Número Sequencial do registro do arquivo trailer`
-                  FROM retorno_santander            
-                """
+        FROM retorno_santander
+        """
         
         if codigo_doc:
             consulta_remessa += " WHERE `CODIGO DO DOC` = %s"
             retornosantander_bd = pd.read_sql(consulta_remessa, con=mydb, params=[codigo_doc])
-            
             retornosantander_bd['Data da ocorrência'] = pd.to_datetime(retornosantander_bd['Data da ocorrência'])
             retornosantander_bd = retornosantander_bd.sort_values(by='Data da ocorrência')        
 
@@ -910,26 +908,37 @@ def carregar_dados_retorno_santander(codigo_doc=None):
 
                 'Código movimento retorno': 'Ocorrencia',
             }
-            retornosantander_bd.rename(columns=novos_nomes, inplace=True)
+            retornosantander_bd.rename(columns=novos_nomes, inplace=True)            
         else:
-            retornosantander_bd =retornosantander_bd.head(10)
-            retornosantander_bd = pd.read_sql(consulta_remessa, con=mydb)
-    
+            retornosantander_bd = pd.read_sql(consulta_remessa, con=mydb).head(10)
+
             retornosantander_bd['Data da ocorrência'] = pd.to_datetime(retornosantander_bd['Data da ocorrência'])
-            retornosantander_bd = retornosantander_bd.sort_values(by='Data da ocorrência')        
+            retornosantander_bd = retornosantander_bd.sort_values(by='Data da ocorrência')
 
             novos_nomes = {
                 'Data da ocorrência': 'Data da Ocorrencia',
-
                 'Código movimento retorno': 'Ocorrencia',
             }
             retornosantander_bd.rename(columns=novos_nomes, inplace=True)
 
-        
         return retornosantander_bd
+
     except mysql.connector.Error as e:
         print("Erro ao conectar-se ao banco de dados:", e)
         return pd.DataFrame()
-    
 
-    
+
+@login_required(login_url='login')  # Redireciona para a página de login se o usuário não estiver autenticad
+def santander_view(request):
+    codigo_doc = request.GET.get('codigo_doc')
+    remessa_data = carregar_dados_remessa_santander(codigo_doc)
+    retorno_data = carregar_dados_retorno_santander(codigo_doc)
+
+    context = {
+        'remessa': remessa_data.to_dict(orient='records'),
+        'retorno': retorno_data.to_dict(orient='records'),
+        'codigo_doc': codigo_doc,
+
+    }
+
+    return render(request, 'santander.html', context)

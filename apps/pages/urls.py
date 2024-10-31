@@ -9,6 +9,8 @@ urlpatterns = [
     path('faturamento/', views.faturamento_view, name='faturamento_view'),
     path('docsitau/', views.itau_view, name='itau_view'),
     path('grafeno/', views.grafeno_view, name='grafeno_view'),
+    path('santander/', views.santander_view, name='santander_view'),
+
 
 
 
