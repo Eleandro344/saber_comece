@@ -10,10 +10,9 @@ urlpatterns = [
     path('docsitau/', views.itau_view, name='itau_view'),
     path('grafeno/', views.grafeno_view, name='grafeno_view'),
     path('santander/', views.santander_view, name='santander_view'),
-
-
-
-
-
+    path('sofisa/', views.sofisa_view, name='sofisa_view'),
+    path('sicoob/', views.sicoob_view, name='sicoob_view'),
+    path('safra/', views.safra_view, name='safra_view'),
+    
 
 ]

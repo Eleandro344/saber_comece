@@ -68,6 +68,14 @@
     --spacing-gutter-large: 4rem;
   }
 
+  /*muda a fonte do menu*/
+
+  .nav-link-beat {
+    font-family: 'Poppins', sans-serif; /* Exemplo de fonte */
+    font-size: 16px; /* Tamanho da fonte */
+    color: white; /* Cor da fonte */
+}
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -79,6 +87,7 @@
   z-index: 1050;
   transition: width 0.3s ease-in-out;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 1.2);
+  font-family: Arial, Helvetica, sans-serif;
 }
 html {
   zoom: 0.75; /* Ajusta a escala da página para 75% */

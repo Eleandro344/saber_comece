@@ -942,3 +942,481 @@ def santander_view(request):
     }
 
     return render(request, 'santander.html', context)
+
+
+# SOFISA
+
+
+def carregar_dados_remessa_sofisa(codigo_doc_sofisa=None):
+    try:
+        # Conexão com o banco de dados
+        mydb = mysql.connector.connect(
+            host='db_sabertrimed.mysql.dbaas.com.br',
+            user='db_sabertrimed',
+            password='s@BRtR1m3d',  
+            database='db_sabertrimed',
+        )
+        consulta_remessa = """
+        SELECT 
+            `Data da Gravação do Arquivo`,
+            `Código de movimento remessa`,   
+            `CODIGO DO DOC`,     
+            `Data de vencimento do boleto`,    
+            `Valor nominal do boleto`,    
+            `Nome do Pagador`,    
+            `Data Limite para concessão do desconto`,
+            `Valor do desconto a ser concedido`,
+            `Nº Sequencial do Registro`,
+            `Primeira instrução`,
+            `Segunda instrução`,
+            `Data de emissão do boleto`,
+            `Valor de Mora dia`,
+            `Percentual do IOF a ser recolhido`,
+            `Valor do abatimento ou Valor do segundo desconto`,
+            `Número de dias corridos para Protesto`,
+            `Número sequencial do registro no arquivo`,
+            `Número sequencial de registro no arquivo trailer`
+        FROM remessa_sofisa       
+          """
+        if codigo_doc_sofisa:
+            consulta_remessa += " WHERE `CODIGO DO DOC` = %s"
+            remessasofisa_bd = pd.read_sql(consulta_remessa, con=mydb, params=[codigo_doc_sofisa])
+            
+
+            novos_nomes = {
+                'Data da Gravação do Arquivo': 'Data da Ocorrencia',
+                'Código de movimento remessa': 'Ocorrencia',
+                # ... adicione os outros nomes conforme necessário
+            }
+            remessasofisa_bd.rename(columns=novos_nomes, inplace=True)
+            remessasofisa_bd = remessasofisa_bd.sort_values(by='Data da Ocorrencia', ascending=True)
+
+        else:
+            remessasofisa_bd = pd.read_sql(consulta_remessa, con=mydb).head(10)
+            novos_nomes = {
+                'Data da Gravação do Arquivo': 'Data da Ocorrencia',
+                'Código de movimento remessa': 'Ocorrencia',
+                # ... adicione os outros nomes conforme necessário
+            }
+            remessasofisa_bd.rename(columns=novos_nomes, inplace=True)
+            remessasofisa_bd = remessasofisa_bd.sort_values(by='Data da Ocorrencia', ascending=True)
+        return remessasofisa_bd
+
+    except mysql.connector.Error as e:
+        print("Erro ao conectar-se ao banco de dados:", e)
+        return pd.DataFrame()
+    
+
+    
+def carregar_dados_retorno_sofisa(codigo_doc_sofisa=None):
+    try:
+        # Conexão com o banco de dados
+        mydb = mysql.connector.connect(
+            host='db_sabertrimed.mysql.dbaas.com.br',
+            user='db_sabertrimed',
+            password='s@BRtR1m3d',  
+            database='db_sabertrimed',
+        )
+        consulta_remessa = """
+        SELECT 
+            `Data da ocorrência`,
+            `Código movimento retorno`,        
+            `CODIGO DO DOC`,
+            `Tipo de cobrança`, 
+            `Data de vencimento do boleto`,   
+            `Valor nominal do boleto`,   
+            `Valor total recebido`,       
+            `Valor do juros de mora`,   
+            `Valor da tarifa cobrada`,
+            `Valor de outras despesas`,
+            `Valor de juros de atraso`,
+            `Valor de IOF recolhido`,
+            `Valor do abatimento concedido`,
+            `Valor do desconto concedido`,
+            `Código de erro 1`,
+            `Código de erro 2`,
+            `Código de erro 3`,
+            `Data de vencimento do boleto`,
+            `Valor de outros créditos`,
+            `Valor do IOF em outra unidade`,
+            `Número Sequencial do registro do arquivo corpo`,
+            `Número Sequencial do registro no arquivo cabeacrio`,
+            `Número Sequência do arquivo trailer`,
+            `Número Sequência do arquivo corpo`
+        FROM retorno_sofisa
+             """
+        if codigo_doc_sofisa:
+            consulta_remessa += " WHERE `CODIGO DO DOC` = %s"
+            retornosofisa_db = pd.read_sql(consulta_remessa, con=mydb, params=[codigo_doc_sofisa])
+            retornosofisa_db['Data da ocorrência'] = pd.to_datetime(retornosofisa_db['Data da ocorrência'])
+
+            novos_nomes = {
+                'Data da ocorrência': 'Data da Ocorrencia',
+                'Código movimento retorno': 'Ocorrencia',
+                # ... adicione os outros nomes conforme necessário
+            }
+
+
+
+            retornosofisa_db.rename(columns=novos_nomes, inplace=True)
+
+            retornosofisa_db = retornosofisa_db.sort_values(by=['Data da Ocorrencia', 'Número Sequência do arquivo corpo'], ascending=[True, True])
+
+
+            retornosofisa_db.loc[retornosofisa_db['Ocorrencia'] == '28', 'Ocorrencia'] = "Débito Tarifas/Custas Correspondentes"
+
+            retornosofisa_db.loc[retornosofisa_db['Tipo de cobrança'] == '4', 'Tipo de cobrança'] = "Título Descontado"
+            retornosofisa_db.loc[retornosofisa_db['Tipo de cobrança'] == '2', 'Tipo de cobrança'] = "Cobrança Vinculada"
+            retornosofisa_db.loc[retornosofisa_db['Tipo de cobrança'] == '3', 'Tipo de cobrança'] = "Cobrança Caucionada"
+        else:    
+            retornosofisa_db = pd.read_sql(consulta_remessa, con=mydb).head(10)
+
+
+            retornosofisa_db['Data da ocorrência'] = pd.to_datetime(retornosofisa_db['Data da ocorrência'])
+
+            novos_nomes = {
+                'Data da ocorrência': 'Data da Ocorrencia',
+                'Código movimento retorno': 'Ocorrencia',
+                # ... adicione os outros nomes conforme necessário
+            }
+
+
+
+            retornosofisa_db.rename(columns=novos_nomes, inplace=True)
+
+            retornosofisa_db = retornosofisa_db.sort_values(by=['Data da Ocorrencia', 'Número Sequência do arquivo corpo'], ascending=[True, True])
+
+
+            retornosofisa_db.loc[retornosofisa_db['Ocorrencia'] == '28', 'Ocorrencia'] = "Débito Tarifas/Custas Correspondentes"
+
+            retornosofisa_db.loc[retornosofisa_db['Tipo de cobrança'] == '4', 'Tipo de cobrança'] = "Título Descontado"
+            retornosofisa_db.loc[retornosofisa_db['Tipo de cobrança'] == '2', 'Tipo de cobrança'] = "Cobrança Vinculada"
+            retornosofisa_db.loc[retornosofisa_db['Tipo de cobrança'] == '3', 'Tipo de cobrança'] = "Cobrança Caucionada"
+
+
+        return retornosofisa_db
+    except mysql.connector.Error as e:
+        print("Erro ao conectar-se ao banco de dados:", e)
+        return pd.DataFrame()                        
+
+@login_required(login_url='login')  # Redireciona para a página de login se o usuário não estiver autenticad
+def sofisa_view(request):
+    codigo_doc_sofisa = request.GET.get('codigo_doc_sofisa')
+    remessa_data = carregar_dados_remessa_sofisa(codigo_doc_sofisa)
+    retorno_data = carregar_dados_retorno_sofisa(codigo_doc_sofisa)
+
+    context = {
+        'remessa': remessa_data.to_dict(orient='records'),
+        'retorno': retorno_data.to_dict(orient='records'),
+        'codigo_doc_sofisa': codigo_doc_sofisa,
+
+    }
+
+    return render(request, 'sofisa.html', context)
+
+
+# SICOOB
+
+
+def carregar_dados_remessa_sicoob(codigo_doc_sicoob=None):
+    try:
+        # Conexão com o banco de dados
+        mydb = mysql.connector.connect(
+            host='db_sabertrimed.mysql.dbaas.com.br',
+            user='db_sabertrimed',
+            password='s@BRtR1m3d',  
+            database='db_sabertrimed',
+        )
+        consulta_remessa = """
+            SELECT 
+                `Data de Geração do Arquivo header`,
+                `Ocorrencia`,
+                `CODIGO DO DOC`,
+                `Valor do Título`
+            FROM remessa_sicoob
+            """
+        
+        if codigo_doc_sicoob:
+            consulta_remessa += " WHERE `CODIGO DO DOC` = %s"
+            remessasafra_bd = pd.read_sql(consulta_remessa, con=mydb, params=[codigo_doc_sicoob])        
+            remessasafra_bd['Data de Geração do Arquivo header'] = pd.to_datetime(remessasafra_bd['Data de Geração do Arquivo header'], format='%d%m%Y')
+
+
+            remessasafra_bd = remessasafra_bd.sort_values(by=['Data de Geração do Arquivo header'], ascending=[True])
+
+            novos_nomes = {
+                'Data de Geração do Arquivo header': 'Data da Ocorrencia',
+                'Ocorrencia': 'Ocorrencia',
+                # ... adicione os outros nomes conforme necessário
+            }
+            remessasafra_bd.rename(columns=novos_nomes, inplace=True)
+        else:
+            remessasafra_bd = pd.read_sql(consulta_remessa, con=mydb).head(10)
+            remessasafra_bd['Data de Geração do Arquivo header'] = pd.to_datetime(remessasafra_bd['Data de Geração do Arquivo header'], format='%d%m%Y')
+            remessasafra_bd = remessasafra_bd.sort_values(by=['Data de Geração do Arquivo header'], ascending=[True])
+            novos_nomes = {
+                'Data de Geração do Arquivo header': 'Data da Ocorrencia',
+                'Ocorrencia': 'Ocorrencia',
+                # ... adicione os outros nomes conforme necessário
+            }
+            mydb.close()
+
+        return remessasafra_bd
+    
+
+    except mysql.connector.Error as e:
+        print("Erro ao conectar-se ao banco de dados:", e)
+        return pd.DataFrame()
+    
+
+
+def carregar_dados_retorno_sicoob(codigo_doc_sicoob=None):
+    try:
+        # Conexão com o banco de dados        
+        mydb = mysql.connector.connect(
+            host='db_sabertrimed.mysql.dbaas.com.br',
+            user='db_sabertrimed',
+            password='s@BRtR1m3d',  
+            database='db_sabertrimed',
+        )
+        consulta_retorno = """
+            SELECT 
+                `Data de Geração do Arquivo header`,
+                `Ocorrencia`,
+                `CODIGO DO DOC`,
+                `Carteira`,
+                `Valor do Título`,
+                `Vencimento`,
+                `Nº do Registro`
+            FROM retorno_sicoob
+        """
+        if codigo_doc_sicoob:
+            consulta_retorno += " WHERE `CODIGO DO DOC` = %s"
+            safraretorno_db = pd.read_sql(consulta_retorno, con=mydb, params=[codigo_doc_sicoob])
+            mydb.close()
+
+            new_order = [
+            'Data de Geração do Arquivo header',   
+            'Ocorrencia',  
+            'CODIGO DO DOC',
+            'Carteira', 
+            'Valor do Título',
+            'Vencimento',
+            'Nº do Registro',
+
+            ]
+
+            safraretorno_db = safraretorno_db[new_order]
+            safraretorno_db['Data de Geração do Arquivo header'] = pd.to_datetime(safraretorno_db['Data de Geração do Arquivo header'], format='%d%m%Y')
+
+            # safraretorno_db['Data da Ocorrencia']  = pd.to_datetime(safraretorno_db['Data da Ocorrencia'])
+            safraretorno_db['Vencimento'] = pd.to_datetime(safraretorno_db['Vencimento'], format='%d%m%Y')
+
+
+            safraretorno_db = safraretorno_db.sort_values(by=['Data de Geração do Arquivo header', 'Nº do Registro'], ascending=[True, True])
+        else:
+            safraretorno_db = pd.read_sql(consulta_retorno, con=mydb).head(10)
+            new_order = [
+            'Data de Geração do Arquivo header',   
+            'Ocorrencia',  
+            'CODIGO DO DOC',
+            'Carteira', 
+            'Valor do Título',
+            'Vencimento',
+            'Nº do Registro',
+
+            ]
+
+            safraretorno_db = safraretorno_db[new_order]
+            safraretorno_db['Data de Geração do Arquivo header'] = pd.to_datetime(safraretorno_db['Data de Geração do Arquivo header'], format='%d%m%Y')
+
+            # safraretorno_db['Data da Ocorrencia']  = pd.to_datetime(safraretorno_db['Data da Ocorrencia'])
+            safraretorno_db['Vencimento'] = pd.to_datetime(safraretorno_db['Vencimento'], format='%d%m%Y')
+
+
+            safraretorno_db = safraretorno_db.sort_values(by=['Data de Geração do Arquivo header', 'Nº do Registro'], ascending=[True, True])
+        
+        return safraretorno_db
+    except mysql.connector.Error as e:
+        print("Erro ao conectar-se ao banco de dados:", e)
+        return pd.DataFrame()
+    
+
+@login_required(login_url='login')  # Redireciona para a página de login se o usuário não estiver autenticad
+def sicoob_view(request):
+    codigo_doc_sicoob = request.GET.get('codigo_doc_sicoob')
+    remessa_data = carregar_dados_remessa_sicoob(codigo_doc_sicoob)
+    retorno_data = carregar_dados_retorno_sicoob(codigo_doc_sicoob)
+
+    context = {
+        'remessa': remessa_data.to_dict(orient='records'),
+        'retorno': retorno_data.to_dict(orient='records'),
+        'codigo_doc_sicoob': codigo_doc_sicoob,
+
+    }
+
+    return render(request, 'sicoob.html', context)
+
+
+# SAFRA
+def carregar_dados_remessa_safra(codigo_doc_safra=None):
+    try:
+        # Conexão com o banco de dados
+        mydb = mysql.connector.connect(
+            host='db_sabertrimed.mysql.dbaas.com.br',
+            user='db_sabertrimed',
+            password='s@BRtR1m3d',  
+            database='db_sabertrimed',
+        )
+        consulta_remessa = """
+        SELECT
+            `Data da Gravação do Arquivo`,
+                `Cod. Ocorrência`,
+                `CODIGO DO DOC`,
+                `Valor Do Título`, 
+                `Vencimento`,
+                `Cod. Carteira`,
+                `Nome Do Pagador`, 
+                `Data De Emissão Do Título`,
+                `Valor Do Desconto Concedido`,
+                `dias protesto`, 
+                `Primeira Instrução De Cobrança`,
+                `Segunda Instrução De Cobrança`, 
+                `Juros 1 Dia`,
+                `Data Limite Para Desconto`, 
+                `Valor lof`, 
+                `Número Sequenc. De Registro De Arquivo`,
+                `Nº Sequencial do Arquivo`, 
+                `Nº Sequencial do Registro`,
+                `Número sequencial de registro no arquivo trailer`
+                FROM remessa_safra
+                        """
+        # Reordena as colunas do DataFrame
+        if codigo_doc_safra:
+            consulta_remessa += " WHERE `CODIGO DO DOC` = %s"
+            remessasafra_bd = pd.read_sql(consulta_remessa, con=mydb, params=[codigo_doc_safra])
+            
+            remessasafra_bd = remessasafra_bd.sort_values(by='Data da Gravação do Arquivo', ascending=True)
+
+            novos_nomes = {
+                'Data da Gravação do Arquivo': 'Data da Ocorrencia',
+                'Cod. Ocorrência': 'Ocorrencia',
+                # ... adicione os outros nomes conforme necessário
+            }
+            remessasafra_bd.rename(columns=novos_nomes, inplace=True)
+
+            remessasafra_bd['Data da Ocorrencia'] = pd.to_datetime(remessasafra_bd['Data da Ocorrencia'])
+
+            # Ordenar o DataFrame pela coluna 'Data da Ocorrência' de forma crescente
+            #df_retorno = df_retorno.sort_values(by='DATA DA GERAÇÃO DO ARQUIVO')
+            remessasafra_bd = remessasafra_bd.sort_values(by=['Data da Ocorrencia', 'Número Sequenc. De Registro De Arquivo'], ascending=[True, True])
+        else:
+            remessasafra_bd = pd.read_sql(consulta_remessa, con=mydb).head(10)
+            
+            remessasafra_bd = remessasafra_bd.sort_values(by='Data da Gravação do Arquivo', ascending=True)
+
+            novos_nomes = {
+                'Data da Gravação do Arquivo': 'Data da Ocorrencia',
+                'Cod. Ocorrência': 'Ocorrencia',
+                # ... adicione os outros nomes conforme necessário
+            }
+            remessasafra_bd.rename(columns=novos_nomes, inplace=True)
+
+            remessasafra_bd['Data da Ocorrencia'] = pd.to_datetime(remessasafra_bd['Data da Ocorrencia'])
+
+            # Ordenar o DataFrame pela coluna 'Data da Ocorrência' de forma crescente
+            #df_retorno = df_retorno.sort_values(by='DATA DA GERAÇÃO DO ARQUIVO')
+            remessasafra_bd = remessasafra_bd.sort_values(by=['Data da Ocorrencia', 'Número Sequenc. De Registro De Arquivo'], ascending=[True, True])
+                    
+
+        return remessasafra_bd
+    except mysql.connector.Error as e:
+        print("Erro ao conectar-se ao banco de dados:", e)
+        return pd.DataFrame()                    
+    
+
+def carregar_dados_retorno_safra(codigo_doc_safra=None):
+    try:
+        # Conexão com o banco de dados
+        mydb = mysql.connector.connect(
+            host='db_sabertrimed.mysql.dbaas.com.br',
+            user='db_sabertrimed',
+            password='s@BRtR1m3d',  
+            database='db_sabertrimed',
+        )
+        consulta_remessa = """
+        SELECT
+            `Data Da Ocorrência No Banco`,   
+            `Identifica  o Da Ocorrência (Retorno)`,  
+            `CODIGO DO DOC`,
+            `Identificação Do Tipo De Carteira`, 
+            `Valor Título`,
+            `Valor Líquido Pago Pelo Pagador`,
+            `Data De Vencimento Do Título`,
+            `Valor Do Desconto Concedido`, 
+            `Tarifa De Cobrança`,
+            `indica entrada do titulo no DDA`,
+            `Identificaçao Do Registro Transação`, 
+            `Tipo De Inscri ão Da Empresara`, 
+            `Número De Inscriçao Da Empresa`,
+            `Identifica  o Do Título No Banco`,
+            `Cod. Ocorrência Recebida No Arquivo REMESSA`,
+            `Código De Motivo De Rejeição`, 
+            `Data Da Geração Do Arquivo Retorno`,
+            `Número Seqüencial Geração Arquivo Retorno treiler`,
+            `Número Seqüencial Do Registro No Arquivo treiler`
+
+          FROM retorno_safra            
+                    """
+        if codigo_doc_safra:
+            consulta_remessa += " WHERE `CODIGO DO DOC` = %s"
+            remessasafra_bd = pd.read_sql(consulta_remessa, con=mydb, params=[codigo_doc_safra])
+            
+            safraretorno_db['Data da Ocorrencia']  = pd.to_datetime(safraretorno_db['Data da Ocorrencia'])
+            #df_retorno['Data De Vencimento Do Título']  = pd.to_datetime(df_retorno['Data De Vencimento Do Título'])
+
+
+            safraretorno_db = safraretorno_db.sort_values(by=['Data da Ocorrencia', 'Número Seqüencial Do Registro No Arquivo'], ascending=[True, True])
+                
+
+            safraretorno_db.loc[safraretorno_db['Ocorrencia'] == 'REMESSA DE TÍTULOS', 'Ocorrencia'] = "ENVIADO"
+            safraretorno_db['Data De Vencimento Do Título'] = pd.to_datetime(safraretorno_db['Data De Vencimento Do Título'], format='%d%m%y', errors='coerce')
+
+            safraretorno_db['Data De Vencimento Do Título'] = safraretorno_db['Data De Vencimento Do Título'].dt.strftime('%d/%m/%Y')
+
+        else:
+            remessasafra_bd = pd.read_sql(consulta_remessa, con=mydb).head(10)
+            safraretorno_db['Data da Ocorrencia']  = pd.to_datetime(safraretorno_db['Data da Ocorrencia'])
+            #df_retorno['Data De Vencimento Do Título']  = pd.to_datetime(df_retorno['Data De Vencimento Do Título'])
+
+
+            safraretorno_db = safraretorno_db.sort_values(by=['Data da Ocorrencia', 'Número Seqüencial Do Registro No Arquivo'], ascending=[True, True])
+                
+
+            safraretorno_db.loc[safraretorno_db['Ocorrencia'] == 'REMESSA DE TÍTULOS', 'Ocorrencia'] = "ENVIADO"
+            safraretorno_db['Data De Vencimento Do Título'] = pd.to_datetime(safraretorno_db['Data De Vencimento Do Título'], format='%d%m%y', errors='coerce')
+
+            safraretorno_db['Data De Vencimento Do Título'] = safraretorno_db['Data De Vencimento Do Título'].dt.strftime('%d/%m/%Y')
+
+        return remessasafra_bd
+    except mysql.connector.Error as e:
+        print("Erro ao conectar-se ao banco de dados:", e)
+        return pd.DataFrame()
+    
+                        
+@login_required(login_url='login')  # Redireciona para a página de login se o usuário não estiver autenticad
+def safra_view(request):
+    codigo_doc_safra = request.GET.get('codigo_doc_safra')
+    remessa_data = carregar_dados_remessa_sofisa(codigo_doc_safra)
+    retorno_data = carregar_dados_retorno_sofisa(codigo_doc_safra)
+
+    context = {
+        'remessa': remessa_data.to_dict(orient='records'),
+        'retorno': retorno_data.to_dict(orient='records'),
+        'codigo_doc_safra': codigo_doc_safra,
+
+    }
+
+    return render(request, 'safra.html', context)
+
+
