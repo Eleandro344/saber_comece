@@ -2,12 +2,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">    
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <div class="sidebar">
     <div class="sidebar-header">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-        <img src="{% static 'image/logobranco.png' %}" alt="Logo" class="img-fluid">
+        <img src="{% static 'image/logocomece.svg' %}" alt="Logo" class="img-fluid">
 </div>
     <hr>
     <p class="welcome-text">Bem-Vindo, {{user.first_name}}!</p>
@@ -16,17 +18,17 @@
             <i class="fas fa-home me-2 fa-lg" style="color: #FFFFFF;font-size:30px;"></i>
             <span class="sidebar-info">Home</span>
         </a>
-        <a href="/unicred" class="nav-link nav-link-beat {% if request.path == '/unicred/' %}active{% endif %}">
-            <i class="bi bi-stack-overflow" style="color: #FFFFFF;font-size:25px;"></i>
-            <span class="sidebar-info">Unicred</span>
+        <a href="/trocar_certificado/" class="nav-link nav-link-beat {% if request.path == '/trocar_certificado/' %}active{% endif %}">
+            <i class="fa-solid fa-folder" style="color: #FFFFFF;font-size:25px;"></i>
+            <span class="sidebar-info">Integra Contador</span>
         </a>
         <a href="/docsitau" class="nav-link nav-link-beat {% if request.path == '/docsitau/' %}active{% endif %}">
-            <i class="bi bi-stack-overflow" style="color: #FFFFFF;font-size:25px;"></i>
-            <span class="sidebar-info">Banco Itau</span>
-        </a>
+            <i class="fa-solid fa-arrow-down-9-1" style="color: #FFFFFF;font-size:25px;"></i>
+            <span class="sidebar-info">Conciliador</span>
+        </a> 
         <a href="/grafeno" class="nav-link nav-link-beat {% if request.path == '/grafeno/' %}active{% endif %}">
-            <i class="bi bi-stack-overflow" style="color: #FFFFFF;font-size:25px;"></i>
-            <span class="sidebar-info">Banco Grafeno</span>
+            <i class="fa-solid fa-sitemap" style="color: #FFFFFF;font-size:25px;"></i>
+            <span class="sidebar-info">Sittax</span>
         </a>     
         <a href="/santander" class="nav-link nav-link-beat {% if request.path == '/santander/' %}active{% endif %}">
             <i class="bi bi-stack-overflow" style="color: #FFFFFF;font-size:25px;"></i>

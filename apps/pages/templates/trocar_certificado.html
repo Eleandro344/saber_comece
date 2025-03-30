@@ -1,0 +1,34 @@
+<form method="POST">
+    {% csrf_token %}
+    <label for="certificado">Caminho do Certificado:</label>
+    <input type="text" id="certificado" name="certificado" placeholder="Digite o caminho do certificado .pfx ou .p12" required>
+    
+    <br><br>
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" name="senha" placeholder="Digite a senha do certificado" required>
+
+    <br><br>
+    <label for="salvar">Caminho para salvar os Relatórios:</label>
+    <input type="text" id="salvar" name="salvar" placeholder="Digite o caminho para salvar os PDFs" required>
+    
+    <br><br>
+    <button type="submit">Salvar dados</button>
+</form>
+
+<!-- Botão para disparar os relatórios -->
+<button id="disparar-relatorio">Disparar Relatórios</button>
+
+<script>
+    document.getElementById("disparar-relatorio").addEventListener("click", function() {
+        fetch("{% url 'disparar_relatorio' %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(data => alert(data.message || data.error))
+        .catch(error => console.error("Erro ao disparar relatório:", error));
+    });
+</script>

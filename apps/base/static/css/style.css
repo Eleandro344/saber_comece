@@ -83,7 +83,7 @@
   bottom: 0;
   width: 6rem;
   padding: 2rem 1rem;
-  background-color: #008B8B;
+  background-color: #00b5cc;
   z-index: 1050;
   transition: width 0.3s ease-in-out;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 1.2);
@@ -98,6 +98,7 @@ html {
 }
 .nav-link-beat:hover {
   animation: beat 0.5s infinite;
+  
 }
 @keyframes beat {
   0%, 100% {
@@ -173,7 +174,7 @@ html {
 
 
 .text-footer {
-    background-color: rgb(0, 139, 139); /* Se preferir uma cor personalizada */
+    background-color: #00b5cc; /* Se preferir uma cor personalizada */
     color: white; /* Cor do texto */
     padding: 15px; /* Espaçamento interno */
     font-family: Arial, sans-serif; /* Fonte */}
@@ -203,13 +204,14 @@ html {
   }
 }
 .custom-header {
-  background-color: rgb(0, 139, 139); /* Se preferir uma cor personalizada */
-  padding: 20px 0; /* Padding de 20px no topo e na base */
+  background-color: #00b5cc; /* Se preferir uma cor personalizada */
+  padding: 15px 0; /* Padding de 20px no topo e na base */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
   display: flex;
   flex-direction: column; /* Alinha os elementos verticalmente */
   justify-content: center; /* Centraliza o conteúdo horizontalmente */
   align-items: center; /* Centraliza verticalmente */
+  font-family: "Unbounded"
 }
 
 .custom-header img {
@@ -218,7 +220,7 @@ html {
 }
 
 .header-text {
-  font-size: 1.0rem; /* Tamanho da fonte */
+  font-size: 5.0rem; /* Tamanho da fonte */
   color: #fff; /* Cor branca */
   margin-top: 2px; /* Espaçamento entre a logo e o texto */
   font-family: 'Poppins', sans-serif; /* Fonte utilizada */
@@ -233,6 +235,8 @@ html {
   height: auto; /* Mantém a proporção */
 }
 .custom-button {
+  margin-top: 8px; /* Espaçamento entre a logo e o texto */
+
   background-color: mediumturquoise; /* Cor de fundo */
   color: black; /* Cor do texto */
   font-family: 'Poppins', sans-serif; /* Fonte */
